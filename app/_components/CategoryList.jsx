@@ -29,3 +29,4 @@ function CategoryList({ categoryList }) {
 }
 
 export default CategoryList;
+
