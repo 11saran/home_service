@@ -1,13 +1,21 @@
-"use client"
-import { Button } from '@/components/ui/button';
-import { signIn, useSession } from 'next-auth/react';
-import Image from 'next/image';
-import React, { useEffect } from 'react'
+"use client";
+import { Button } from "@/components/ui/button";
+import { signIn, signOut, useSession } from "next-auth/react";
+import Image from "next/image";
+import React, { useEffect } from "react";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 function Header() {
-const{data}= useSession();
-useEffect(()=>{
-},[data])
+  const { data } = useSession();
+  useEffect(() => {}, [data]);
 
   return (
     <div className="p-5 shadow-sm flex justify-between">
@@ -26,15 +34,27 @@ useEffect(()=>{
         </div>
       </div>
       <div>
-       {data?.user?
-       <Image src = {data?.user?.image}
-       alt='user'
-       width={40}
-       height={40}
-       className='rounded-full'/>:
-       <Button onClick={() => signIn("descope")}>Login / Sign Up</Button>
-       }
-        
+        {data?.user ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Image
+                src={data?.user?.image}
+                alt="user"
+                width={40}
+                height={40}
+                className="rounded-full"
+              />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>My Booking</DropdownMenuItem>
+              <DropdownMenuItem onClick={()=>signOut()}>Log Out</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          <Button onClick={() => signIn("descope")}>Login / Sign Up</Button>
+        )}
       </div>
     </div>
   );
