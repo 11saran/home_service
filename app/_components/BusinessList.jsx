@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 function BusinessList({ businessList, title }) {
@@ -14,7 +15,7 @@ function BusinessList({ businessList, title }) {
                 className="h-[300px] w-full bg-slate-200 animate-pulse rounded-lg"
               ></div>
             )) : businessList.map((business, index) => (
-          <div
+          <Link href={'/details/'+business.id}
             key={index}
             className="shadow-md rounded-lg hover:shadow-lg hover:shadow-primary cursor-pointer hover:scale-105 transition-all ease-in-out "
           >
@@ -34,7 +35,7 @@ function BusinessList({ businessList, title }) {
               <h2 className="text-gray-500 text-sm">{business.address}</h2>
               <Button className="rounded-lg mt-3">Book Now</Button>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
