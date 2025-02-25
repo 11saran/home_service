@@ -3,6 +3,7 @@ import { Outfit, Inter } from "next/font/google"; // ✅ Import Inter
 import "./globals.css";
 import Header from "./_components/Header";
 import NextAuthSessionProvider from "./provider"
+import { Toaster } from "sonner";
 
 const outfitFont = Outfit({
   variable: "--font-outfit",
@@ -25,6 +26,7 @@ export default function RootLayout({ children }) {
         <NextAuthSessionProvider>
           <div className="mx-6 md:mx-16">
             <Header />
+            <Toaster/>
             {children}
           </div>
         </NextAuthSessionProvider>
