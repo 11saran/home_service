@@ -14,31 +14,33 @@ import { Button } from "@/components/ui/button";
 import GlobalApi from "@/app/_Services/GlobalApi";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
+import moment from "moment/moment";
 
 function BookingSection({ children, business }) {
   const [date, setDate] = useState(new Date());
   const [timeSlot, setTimeSlot] = useState();
   const [selectedTime, setSelectedTime] = useState();
-  const [bookedSlot,setBooedSlot]= useState([]);
-  const {data} = useSession();
+  const [bookedSlot, setBooedSlot] = useState([]);
+  const { data } = useSession();
   useEffect(() => {
     getTime();
-   
   }, []);
 
   //Get selected date business slot
 
-  useEffect(()=>{
-    date && BusinessBookedSlot()
-  },[date])
+  useEffect(() => {
+    date && BusinessBookedSlot();
+  }, [date]);
 
-const BusinessBookedSlot=()=>{
-GlobalApi.BusinessBooedSlot(business.id,date).then(res=>{
-console.log(res)
-setBooedSlot(res.bookings);
-})
-}
-
+  const BusinessBookedSlot = () => {
+    GlobalApi.BusinessBooedSlot(
+      business.id,
+      moment(date).format("DD-MMM-YYYY")
+    ).then((res) => {
+      console.log(res);
+      setBooedSlot(res.bookings);
+    });
+  };
 
   const getTime = () => {
     const timeList = [];
@@ -63,22 +65,30 @@ setBooedSlot(res.bookings);
   };
 
   const saveBooking = () => {
-    GlobalApi.createNewBooking(business.id, date, selectedTime,data.user.email,data.user.name).then(res=>{
-        console.log(res)
+    GlobalApi.createNewBooking(
+      business.id,
+      moment(date).format("DD-MMM-YYYY"),
+      selectedTime,
+      data.user.email,
+      data.user.name
+    ).then(
+      (res) => {
+        console.log(res);
         if (res) {
-             setDate("");
-             setSelectedTime("");
-            toast('Service Booked Successfully! ')
+          setDate("");
+          setSelectedTime("");
+          toast("Service Booked Successfully! ");
         }
-    },(e)=>{
-        toast('Error While Creating Booking')
-    })
+      },
+      (e) => {
+        toast("Error While Creating Booking");
+      }
+    );
   };
 
-const isSlotBooked=(time)=>{
-    return bookedSlot.find(item=>item.time==time)
-}
-
+  const isSlotBooked = (time) => {
+    return bookedSlot.find((item) => item.time == time);
+  };
 
   return (
     <div>
